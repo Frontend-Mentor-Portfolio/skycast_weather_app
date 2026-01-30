@@ -60,7 +60,40 @@ function App() {
   // Save settings [NEW]
   useEffect(() => {
     localStorage.setItem('weather-notifications', JSON.stringify(notificationSettings));
-  }, [notificationSettings]);
+
+    // Send settings to SW
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'UPDATE_STATE',
+        payload: {
+          settings: notificationSettings,
+          location: location,
+          unit: unit
+        }
+      });
+    }
+  }, [notificationSettings, location, unit]);
+
+  // Register Periodic Sync
+  useEffect(() => {
+    const registerPeriodicSync = async () => {
+      if ('serviceWorker' in navigator) {
+        const registration = await navigator.serviceWorker.ready;
+        if ('periodicSync' in registration) {
+          try {
+            // @ts-ignore
+            await registration.periodicSync.register('weather-update', {
+              minInterval: 15 * 60 * 1000, // 15 minutes
+            });
+            console.log('Periodic Sync registered');
+          } catch (error) {
+            console.error('Periodic Sync registration failed:', error);
+          }
+        }
+      }
+    };
+    registerPeriodicSync();
+  }, []);
 
   useEffect(() => {
     // Dynamic Theme based on time of day

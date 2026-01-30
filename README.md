@@ -1,159 +1,73 @@
-# Frontend Mentor - SkyCast Weather App Solution
-
-This is a solution to the [Weather App challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/weather-app-SlVAb76Y_). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
-
-## Table of contents
-
-- [Overview](#overview)
-  - [The challenge](#the-challenge)
-  - [Screenshot](#screenshot)
-  - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Continued development](#continued-development)
-  - [Useful resources](#useful-resources)
-- [Features](#features)
-- [Features in Detail](#features-in-detail)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Author](#author)
-- [Acknowledgments](#acknowledgments)
-
-## Overview
+# SkyCast Weather App
 
 SkyCast is a modern, feature-rich weather dashboard built with React 19 and Tailwind CSS 4. It provides real-time weather data, 7-day forecasts, and immersive animated backgrounds that adapt to current conditions and the time of day.
-
-### The challenge
-
-Users should be able to:
-
-- Search for weather information by entering a location in the search bar.
-- Use **Voice Search** to find locations hands-free.
-- View current weather conditions including temperature, weather icon, and location details.
-- See additional weather metrics like **UV Index**, **Visibility**, **Pressure**, and **Sunrise/Sunset** times.
-- Browse a 7-day weather forecast and a detailed hourly forecast.
-- **Compare Locations**: View weather side-by-side for up to 4 different places.
-- **Favorites System**: Bookmark frequently checked locations for quick access.
-- **Automated Themes**: The app switches between Light and Dark modes based on the user's local time.
-- **PWA Support**: Install the app on mobile or desktop for a native-like experience and offline access.
-
-### Screenshot
 
 ![SkyCast Desktop View](./screenshots/desktop-view.jpeg)
 ![SkyCast Tablet View](./screenshots/tablet-view.jpeg)
 ![SkyCast Mobile View](./screenshots/mobile-view.jpeg)
 
-### Links
-
-- Solution URL: [Add solution URL here](https://github.com/Frontend-Mentor-Portfolio/skycast_weather_app)
-- Live Site URL: [Add live site URL here](https://skycastweatherapp-phi.vercel.app/)
-
----
-
-## My process
-
-### 1. Planning & Design
-- Analyzed the Frontend Mentor designs and expanded them with advanced features like Comparison Mode and Favorites.
-- Designed a custom HSL-based theme system to handle daylight (Muted Light) and nighttime (Immersive Dark) transitions.
-
-### 2. Core Implementation
-- Used **Vite 6** for a blazing-fast development environment.
-- Integrated **Open-Meteo API** for weather data and **Nominatim (OpenStreetMap)** for reverse geocoding.
-- Built a custom particle and gradient system for animated weather backgrounds.
-
-### 3. Advanced Features
-- Implemented **Voice Search** using the Web Speech API.
-- Developed a **Comparison Mode** allowing side-by-side weather analysis for multiple cities.
-- Added **PWA** capabilities using `vite-plugin-pwa` for mobile installation and offline caching.
-
-### 4. Accessibility & UX
-- Ensured a mobile-first, responsive layout that remains functional on screens as small as 320px.
-- Fine-tuned light mode contrast to reduce eye strain while maintaining a sophisticated look.
-- Added keyboard-accessible search and comparison toggles.
-
-### Built with
-
-- **React 19** – Modern UI and state management
-- **Vite 6** – Next-generation build tool
-- **Tailwind CSS 4** – Utility-first CSS framework with dynamic theme variables
-- **Open-Meteo API** – Real-time weather data
-- **Nominatim API** – Geocoding and reverse geocoding
-- **Web Speech API** – Integrated voice recognition
-- **vite-plugin-pwa** – Progressive Web App capabilities
-
-### What I learned
-
-I gained deep experience in managing complex asynchronous state (fetching multiple locations simultaneously for comparison) and implementing time-based automated UI transitions. I also mastered CSS-based particle systems for the weather animations, ensuring they remain high-performance even on mobile devices.
-
-### Continued development
-
-Future updates will include detailed precipitation maps, air quality indices, and a more robust notification system for severe weather alerts.
-
 ## Features
 
-| Feature | Details |
-|---|---|
-| **Animated Backgrounds** | High-fidelity CSS/SVG animations for Sunny, Cloudy, Rain, Snow, and Storm conditions |
-| **Location Comparison** | Compare weather side-by-side for up to 4 saved locations |
-| **Voice Search** | Hands-free location searching using integrated speech recognition |
-| **Adaptive Theme** | Auto-switching Light/Dark modes based on the user's time of day |
-| **Geolocation** | Automatic weather detection for the user's current city on first visit |
-| **PWA Installed** | Installable as a standalone app on iOS, Android, and Desktop |
+### 🌤 Core Features
+- **Real-Time Weather:** Accurate current conditions including temperature, humidity, wind, UV index, visibility, and pressure.
+- **7-Day Forecast:** Detailed daily and hourly forecasts to plan your week.
+- **Animated Backgrounds:** Immersive particle systems (raindrops, snowflakes, sunbeams) that adapt to weather conditions and time of day.
+- **Smart Location Search:** Instant location lookup with voice search capabilities.
+- **Favorites System:** Bookmark your frequent locations for quick access.
+- **Comparison Mode:** Compare weather side-by-side for up to 4 different places.
 
-## Features in Detail
+### 🔔 Smart Notification System [NEW]
+Stay ahead of the weather with our intelligent alert system:
+- **Precipitation Alerts:** "Rain starting in 15 minutes." Get notified before it pours.
+- **Extreme Temperature Shifts:** Alerts for significant temperature drops or rises (>10°C) compared to yesterday.
+- **Morning Briefing:** A daily 7:00 AM summary detailing forecast highs and temperature trends.
+- **Severe Weather Warnings:** Immediate alerts for high winds (>80km/h) and thunderstorms.
+- **Smart Outfit Advisor:** Context-aware clothing suggestions based on temperature, wind, and rain (e.g., "It's windy and 12°C. You'll want a windbreaker.").
+*(Note: Notifications are managed via browser APIs and configurable in Settings)*
 
-- **Animated Backgrounds:** Immersive particle systems (raindrops, snowflakes, sunbeams) and layered mists that adapt to both the weather and the active theme.
-- **Comparison Mode:** Fetching weather data in parallel for multiple locations, displayed in a clean, scrollable grid.
-- **Voice Search:** Real-time feedback with a pulsing recording state, converting speech to text for instant location lookup.
-- **Metrics Dashboard:** Detailed insights including UV Index, Visibility, Surface Pressure, and formatted Sunrise/Sunset times.
+### 🛠 Tech Stack
+- **Framework:** React 19 + Vite 6
+- **Styling:** Tailwind CSS 4 + Custom CSS Animations
+- **Data Source:** Open-Meteo API (Weather), Nominatim (Geocoding)
+- **State Management:** Custom React Hooks
+- **PWA:** Installable on Desktop & Mobile
 
 ## Getting Started
 
-1. Clone the repository
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/weather-app.git
-   cd weather-app
+   git clone https://github.com/frontend-mentor-portfolio/skycast-weather-app.git
+   cd skycast-weather-app
    ```
 
-2. Install dependencies
+2. **Install dependencies**
    ```bash
-   npm install --legacy-peer-deps
+   npm install
    ```
 
-3. Start development server
+3. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. Open your browser to `https://skycastweatherapp-phi.vercel.app/`
+4. **Build for production**
+   ```bash
+   npm run build
+   ```
 
-## Project Structure
+## Usage
 
-```
-weather-app/
-├── src/
-│   ├── assets/        # Custom fonts and static images
-│   ├── components/    # Reusable UI components (AnimatedBG, Search, etc.)
-│   ├── services/      # API logic (Open-Meteo, Nominatim)
-│   ├── types/         # TypeScript interfaces
-│   ├── utils/         # Weather mapping and helper functions
-│   ├── App.tsx        # Root layout and theme logic
-│   └── main.tsx       # Entry point and PWA registration
-├── public/            # PWA icons and static assets
-├── index.html         # HTML entry with PWA metadata
-└── vite.config.ts     # Vite and PWA plugin configuration
-```
+- **Search:** Use the top search bar to find any city. Click the microphone icon for voice search.
+- **Compare:** Click the "Compare" button to enter comparison mode, then add more cities.
+- **Notifications:** Click the "Settings" (Units) button in the header to toggle specific alerts like Rain, Outfit Advisor, etc.
+- **Theme:** The app automatically switches between Light and Dark modes based on your local time (Light: 6AM-6PM).
 
 ## Author
 
-- Frontend Mentor - [@MhistaFortune](https://www.frontendmentor.io/profile/MhistaFortune)
-- Twitter/X - [@fortunate_egwu](https://www.twitter.com/fortunate_egwu)
+- **Frontend Mentor** - [@MhistaFortune](https://www.frontendmentor.io/profile/MhistaFortune)
+- **Twitter/X** - [@fortunate_egwu](https://www.twitter.com/fortunate_egwu)
 
 ## Acknowledgments
 
-- [Frontend Mentor](https://www.frontendmentor.io) for the project concept.
-- [Open-Meteo](https://open-meteo.com/) for their excellent, free weather API.
-- [OpenStreetMap](https://www.openstreetmap.org/) for the Nominatim geocoding service.
-
+- [Frontend Mentor](https://www.frontendmentor.io) for the challenge.
+- [Open-Meteo](https://open-meteo.com/) for the free weather API.

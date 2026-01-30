@@ -11,7 +11,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({ notifications, on
     const visibleNotifications = notifications.slice(0, 3);
 
     return (
-        <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+        <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 max-w-sm max-[405px]:max-w-[360px] w-full pointer-events-none">
             {visibleNotifications.map((notification) => (
                 <ToastItem key={notification.id} notification={notification} onDismiss={onDismiss} />
             ))}
