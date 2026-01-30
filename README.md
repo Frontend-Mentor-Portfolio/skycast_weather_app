@@ -41,7 +41,9 @@ Users should be able to:
 
 ### Screenshot
 
-![SkyCast Desktop View](./preview.jpg)
+![SkyCast Desktop View](./screenshots/desktop-view.jpeg)
+![SkyCast Tablet View](./screenshots/tablet-view.jpeg)
+![SkyCast Mobile View](./screenshots/mobile-view.jpeg)
 
 ### Links
 

@@ -42,7 +42,12 @@ const ComparisonView: React.FC<ComparisonViewProps> = ({
         </div>
       </div>
 
-      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(locations.length, 4)} xl:grid-cols-${Math.min(locations.length, 4)} gap-6 overflow-x-auto pb-4 custom-scrollbar`}>
+      <div 
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${Math.min(locations.length, 4)} xl:grid-cols-${Math.min(locations.length, 4)} gap-6 overflow-x-auto pb-4 custom-scrollbar focus:outline-none focus:ring-1 focus:ring-blue-500/30 rounded-lg`}
+        tabIndex={0}
+        role="region"
+        aria-label="Location comparison grid"
+      >
         {locations.map((loc) => (
           <ComparisonCard 
             key={`${loc.latitude}-${loc.longitude}`}

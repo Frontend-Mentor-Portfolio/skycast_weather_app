@@ -118,7 +118,12 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ weather }) => {
       </div>
       
       {/* Hourly List - Vertical */}
-      <div className="flex flex-col overflow-y-auto pr-1 custom-scrollbar flex-grow max-h-[560px]">
+      <div 
+        className="flex flex-col overflow-y-auto pr-1 custom-scrollbar flex-grow max-h-[560px] focus:outline-none focus:ring-1 focus:ring-blue-500/30 rounded-lg"
+        tabIndex={0}
+        role="region"
+        aria-label="Hourly forecast list"
+      >
         <div className="flex flex-col gap-2">
           {hourlyDataForDay.map((item) => (
             <div key={item.time} className="flex items-center px-4 py-3 rounded-2xl bg-neutral-700/20 hover:bg-neutral-700/30 transition-colors">
