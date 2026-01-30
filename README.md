@@ -47,8 +47,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Add solution URL here](https://github.com/Frontend-Mentor-Portfolio/skycast_weather_app)
+- Live Site URL: [Add live site URL here](https://skycastweatherapp-phi.vercel.app/)
 
 ---
 
@@ -127,7 +127,7 @@ Future updates will include detailed precipitation maps, air quality indices, an
    npm run dev
    ```
 
-4. Open your browser to `http://localhost:5173`
+4. Open your browser to `https://skycastweatherapp-phi.vercel.app/`
 
 ## Project Structure
 
