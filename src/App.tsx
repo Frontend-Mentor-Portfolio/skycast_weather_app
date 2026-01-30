@@ -10,6 +10,9 @@ import HourlyForecast from './components/HourlyForecast';
 import FavoritesList from './components/FavoritesList';
 import ComparisonView from './components/ComparisonView';
 import UnitToggle from './components/UnitToggle';
+import NotificationToast from './components/NotificationToast'; // [NEW]
+import { useNotifications } from './hooks/useNotifications'; // [NEW]
+import type { NotificationSettings } from './types/weather'; // [NEW]
 import logo from './assets/images/logo.svg';
 import iconLoading from './assets/images/icon-loading.svg';
 
@@ -37,6 +40,27 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
   const [isComparisonMode, setIsComparisonMode] = useState(false);
+
+  // Notification Settings [NEW]
+  const [notificationSettings, setNotificationSettings] = useState<NotificationSettings>(() => {
+    const saved = localStorage.getItem('weather-notifications');
+    return saved ? JSON.parse(saved) : {
+      enabled: false,
+      precipitation: true,
+      tempShifts: true,
+      morningBriefing: true,
+      severeWeather: true,
+      outfitAdvisor: true,
+    };
+  });
+
+  // Init Notifications Hook [NEW]
+  const { notifications, clearNotification } = useNotifications(weather, notificationSettings);
+
+  // Save settings [NEW]
+  useEffect(() => {
+    localStorage.setItem('weather-notifications', JSON.stringify(notificationSettings));
+  }, [notificationSettings]);
 
   useEffect(() => {
     // Dynamic Theme based on time of day
@@ -113,6 +137,14 @@ function App() {
     setUnit(newUnit);
   };
 
+  // Notification Toggle Handler [NEW]
+  const handleNotificationToggle = (key: keyof NotificationSettings) => {
+    setNotificationSettings(prev => ({
+      ...prev,
+      [key]: key === 'enabled' ? !prev.enabled : !prev[key]
+    }));
+  };
+
   const toggleFavorite = (loc: Location) => {
     setFavorites(prev => {
       const isFav = prev.some(f => f.id === loc.id || (f.latitude === loc.latitude && f.longitude === loc.longitude));
@@ -161,7 +193,7 @@ function App() {
                   className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-sm transition-all ${isComparisonMode ? 'bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]' : 'bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border border-neutral-700'}`}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" className="sm:w-[18px] sm:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M21 16v5h-5"/><path d="M3 21h5v-5"/><path d="m21 3-7.5 7.5"/><path d="m15 15 6 6"/><path d="m3 3 6 6"/><path d="m3 21 7.5-7.5"/>
+                    <path d="M16 3h5v5" /><path d="M8 3H3v5" /><path d="M21 16v5h-5" /><path d="M3 21h5v-5" /><path d="m21 3-7.5 7.5" /><path d="m15 15 6 6" /><path d="m3 3 6 6" /><path d="m3 21 7.5-7.5" />
                   </svg>
                   <span>
                     {isComparisonMode ? 'Exit' : 'Compare'}
@@ -172,10 +204,17 @@ function App() {
               )}
             </div>
             <div className="flex-shrink-0">
-              <UnitToggle unit={unit} onToggle={handleUnitToggle} />
+              <div className="flex-shrink-0">
+                <UnitToggle
+                  unit={unit}
+                  onToggle={handleUnitToggle}
+                  notificationSettings={notificationSettings}
+                  onToggleNotification={handleNotificationToggle}
+                />
+              </div>
             </div>
           </div>
-          
+
           {/* Bottom Row: Greeting and Search */}
           <div className="w-full flex flex-col items-center justify-center text-center">
             <div className="w-full max-w-[720px] h-28 sm:h-32 lg:h-auto flex items-center justify-center mx-auto">
@@ -185,8 +224,8 @@ function App() {
               />
             </div>
             <div className="w-full max-w-[560px] mt-3 lg:mt-8">
-              <SearchBar 
-                onLocationSelect={handleLocationSelect} 
+              <SearchBar
+                onLocationSelect={handleLocationSelect}
                 onToggleCompare={toggleCompareLocation}
                 comparedLocations={comparedLocations}
               />
@@ -204,16 +243,16 @@ function App() {
           <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
             <h2 className="text-2xl font-bold text-neutral-200 mb-2">Oops! Something went wrong.</h2>
             <p className="text-neutral-400">Failed to load weather data. Please try again.</p>
-            <button 
-                onClick={() => setLocation({ ...location })} 
-                className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+            <button
+              onClick={() => setLocation({ ...location })}
+              className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
             >
-                Retry
+              Retry
             </button>
           </div>
         ) : weather ? (
           isComparisonMode ? (
-            <ComparisonView 
+            <ComparisonView
               locations={comparedLocations}
               unit={unit}
               onRemove={removeComparedLocation}
@@ -225,9 +264,9 @@ function App() {
             <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
               {/* Main Content (Left/Center) */}
               <div className="lg:col-span-2 xl:col-span-3 flex flex-col gap-6 lg:gap-8">
-                <CurrentWeather 
-                  weather={weather} 
-                  location={location} 
+                <CurrentWeather
+                  weather={weather}
+                  location={location}
                   isFavorite={favorites.some(f => f.id === location.id || (f.latitude === location.latitude && f.longitude === location.longitude))}
                   onToggleFavorite={toggleFavorite}
                   isCompared={comparedLocations.some(f => f.id === location.id || (f.latitude === location.latitude && f.longitude === location.longitude))}
@@ -239,8 +278,8 @@ function App() {
 
               {/* Sidebar (Right) */}
               <div className="lg:col-span-1 flex flex-col gap-6 lg:gap-8 lg:sticky lg:top-8 self-start lg:max-w-[480px] w-full">
-                <FavoritesList 
-                  favorites={favorites} 
+                <FavoritesList
+                  favorites={favorites}
                   currentLocation={location}
                   onSelect={handleLocationSelect}
                   onRemove={toggleFavorite}
@@ -250,7 +289,9 @@ function App() {
             </div>
           )
         ) : null}
+
       </div>
+      <NotificationToast notifications={notifications} onDismiss={clearNotification} />
     </div>
   );
 }

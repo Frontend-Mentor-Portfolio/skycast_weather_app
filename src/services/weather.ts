@@ -63,6 +63,8 @@ export const getWeatherData = async (
         current: 'temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,surface_pressure',
         hourly: 'temperature_2m,weather_code,uv_index,visibility',
         daily: 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset',
+        minutely_15: 'precipitation,precipitation_probability',
+        past_days: 1,
         timezone: 'auto',
         temperature_unit: unit === 'imperial' ? 'fahrenheit' : 'celsius',
         wind_speed_unit: unit === 'imperial' ? 'mph' : 'kmh',
@@ -71,12 +73,12 @@ export const getWeatherData = async (
     });
 
     const data = response.data;
-    
+
     // Find current UV index and visibility from hourly data
     // Usually index 0 is current hour if we use current time
     const currentHourIndex = data.hourly.time.findIndex((t: string) => t === data.current.time);
     const safeIndex = currentHourIndex === -1 ? 0 : currentHourIndex;
-    
+
     const currentUvIndex = data.hourly.uv_index ? data.hourly.uv_index[safeIndex] : 0;
     const currentVisibility = data.hourly.visibility ? data.hourly.visibility[safeIndex] : 0;
 
@@ -95,15 +97,35 @@ export const getWeatherData = async (
         uvIndex: currentUvIndex,
         visibility: currentVisibility,
         pressure: data.current.surface_pressure,
-        sunrise: data.daily.sunrise[0],
-        sunset: data.daily.sunset[0],
+        sunrise: data.daily.sunrise[1], // Index 1 is today because past_days=1 adds yesterday at index 0
+        sunset: data.daily.sunset[1],
       },
       hourly: data.hourly,
-      daily: data.daily,
+      daily: {
+        // We only want future days for the forecast UI, but the API returns past+future
+        // Slice to keep behaviors consistent if needed, or just pass all.
+        // For now, let's keep all but be aware index 0 is yesterday, 1 is today.
+        // Actually, existing components likely expect index 0 to be today.
+        // Let's slice the daily arrays to match expected "forward" forecast
+        time: data.daily.time.slice(1),
+        weather_code: data.daily.weather_code.slice(1),
+        temperature_2m_max: data.daily.temperature_2m_max.slice(1),
+        temperature_2m_min: data.daily.temperature_2m_min.slice(1),
+        sunrise: data.daily.sunrise.slice(1),
+        sunset: data.daily.sunset.slice(1),
+      },
       current_units: {
         ...data.current_units,
         uv_index: data.hourly_units?.uv_index || '',
         visibility: data.hourly_units?.visibility || 'm',
+      },
+      minutely: {
+        precipitation: data.minutely_15?.precipitation || [],
+        precipitationProbability: data.minutely_15?.precipitation_probability || [],
+      },
+      yesterday: {
+        temperatureMax: data.daily.temperature_2m_max[0],
+        temperatureMin: data.daily.temperature_2m_min[0],
       },
     };
   } catch (error) {

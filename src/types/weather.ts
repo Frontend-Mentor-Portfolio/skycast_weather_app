@@ -54,6 +54,23 @@ export interface WeatherData {
     visibility: string;
     surface_pressure: string;
   };
+  minutely: {
+    precipitation: number[];
+    precipitationProbability: number[];
+  };
+  yesterday?: {
+    temperatureMax: number;
+    temperatureMin: number;
+  };
+}
+
+export interface NotificationSettings {
+  enabled: boolean;
+  precipitation: boolean;
+  tempShifts: boolean;
+  morningBriefing: boolean;
+  severeWeather: boolean;
+  outfitAdvisor: boolean;
 }
 
 export type UnitSystem = 'metric' | 'imperial';
